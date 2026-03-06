@@ -417,22 +417,21 @@ uploadBtn.addEventListener('click', async () => {
         await cheerpOSAddStringFile("/str/input.pdf", pdfBytes);
 
         const outputfile = "/files/" + crypto.randomUUID() + ".pdf";
+        const password = pdfPassword.value.trim();
         const args = [
             "/app" + (new URL('./', location.href)).pathname + "pdftimestamp-all.jar",
+            ...(password ? ["-p", password] : []),
             "http://ts.ssl.com",
             "/str/input.pdf",
             outputfile
-        ];
-        // パスワードが入力されている場合は追加
-        const password = pdfPassword.value.trim();
-        if (password) {
-            args.push("-t");
-            args.push(password);
-        }
+        ];console.log(args);
 
         await cheerpjRunJar(...args);
 
         const blob = new Blob([await cjFileBlob(outputfile)], { type: "application/octet-stream" });
+        if(blob.size <= 5){
+            throw new Error("");
+        }
         downloadFile(blob, selectedFile.name.replace('.pdf', '_timestamped.pdf'));
 
         showMessage('タイムスタンプ付きPDFのダウンロードが完了しました', 'success');
