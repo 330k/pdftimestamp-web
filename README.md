@@ -2,6 +2,8 @@
 
 https://330k.github.io/pdftimestamp-web/
 
+![image](header.webp)
+
 This web application applies LTV-compliant timestamp signatures to the selected PDF file.
 
 Since the signing process is performed on the browser side, the PDF content is not sent over the network. Only hash data is transmitted.
