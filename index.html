@@ -357,6 +357,20 @@ const message = document.getElementById('message');
 const cheerpjLoading = document.getElementById('cheerpjLoading');
 const cheerpjProgress = document.getElementById('cheerpjProgress');
 
+const TSAURL = [
+    // Adobe Approved Trust List
+    "http://ts.ssl.com",
+    "http://timestamp.digicert.com",
+    "http://tsa.swisssign.net",
+    "https://tsa.wotrus.com",
+    "http://ts.quovadisglobal.com/ch",
+    // EU Trust List
+    "https://timestamp.aped.gov.gr/qtss",
+    "http://timestamp.sectigo.com/qualified",
+    "http://tsa.baltstamp.lt",
+    "https://rfc3161.ai.moda/azure"
+][0];
+
 let selectedFile = null;
 
 cheerpjInit({
@@ -452,7 +466,7 @@ uploadBtn.addEventListener('click', async () => {
         const args = [
             "/app" + (new URL('./', location.href)).pathname + "pdftimestamp-all.jar",
             ...(password ? ["-p", password] : []),
-            "http://ts.ssl.com",
+            TSAURL,
             "/str/input.pdf",
             outputfile
         ];console.log(args);
