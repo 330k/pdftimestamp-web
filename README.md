@@ -1,4 +1,4 @@
-# pdftimestamp-web: Online PDF Timestamper
+# Online PDF Timestamper: pdftimestamp-web
 
 https://330k.github.io/pdftimestamp-web/
 
