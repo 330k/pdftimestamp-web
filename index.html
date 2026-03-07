@@ -45,6 +45,17 @@
             font-size: 14px;
         }
 
+        .cheerpj-loading {
+            color: #666;
+            text-aglin: center;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .cheerpj-loading progress{
+            width: 100%;
+        }
+
         .upload-area {
             border: 3px dashed #667eea;
             border-radius: 10px;
@@ -271,6 +282,9 @@
     <div class="container">
         <h1>📄 PDFタイムスタンプ</h1>
         <p class="subtitle">PDFファイルにタイムスタンプを付与します</p>
+        <div class="cheerpj-loading" id="cheerpjLoading">
+            Loading... <progress id="cheerpjProgress" value="0">
+        </div>
 
         <div class="upload-area" id="uploadArea">
             <div class="upload-icon">📎</div>
@@ -335,12 +349,15 @@ const togglePassword = document.getElementById('togglePassword');
 const uploadBtn = document.getElementById('uploadBtn');
 const loading = document.getElementById('loading');
 const message = document.getElementById('message');
+const cheerpjLoading = document.getElementById('cheerpjLoading');
+const cheerpjProgress = document.getElementById('cheerpjProgress');
 
 let selectedFile = null;
 
 cheerpjInit({
     version: 17,
     javaProperties: ['pdftimestamp.urlprefix=https%3A%2F%2Fgeneric-proxy.330k.workers.dev%2F%3Fx-url%3D'],
+    preloadProgress: showPreloadProgress,
     preloadResources: {"/lt/17/lib/modules":[0,131072,1179648,5373952,5505024,6291456,6422528,6553600,6684672,7208960,7733248,8519680,9175040,9306112,9437184,10092544,10354688,10485760,19005440,19136512,19791872,19922944,21364736,21626880,21757952,22020096,25165824,25296896,26083328,26476544,26738688,27000832,27787264,27918336,28704768,28835840,29622272,29753344,30015488,30146560,30670848,30801920,35520512,35913728,37486592,37617664,37748736,37879808,38010880,38141952],"/lt/etc/users":[0,131072],"/lt/17/jre/lib/cheerpj-handlers.jar":[0,131072],"/lt/17/jre/lib/cheerpj-awt.jar":[0,131072],"/lt/17/jre/lib/cheerpj-jsobject.jar":[0,131072],"/lt/17/conf/security/java.security":[0,131072],"/lt/17/conf/logging.properties":[0,131072],"/lt/17/lib/tzdb.dat":[0,131072],"/lt/etc/localtime":[],"/lt/17/conf/accessibility.properties":[],"/lt/etc/timezone":[]}
 });
 
@@ -376,6 +393,15 @@ uploadArea.addEventListener('drop', (e) => {
     uploadArea.classList.remove('dragover');
     handleFile(e.dataTransfer.files[0]);
 });
+
+function showPreloadProgress(preloadDone, preloadTotal) {
+    console.log({preloadDone, preloadTotal});
+    cheerpjProgress.max = preloadTotal
+    cheerpjProgress.value = preloadDone;
+    if(preloadDone >= preloadTotal){
+        cheerpjLoading.style.display = 'none';
+    }
+}
 
 function handleFile(file) {
     if (!file) return;
